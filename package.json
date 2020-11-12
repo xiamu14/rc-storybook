@@ -15,7 +15,7 @@
   },
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build": "build-storybook -c .storybook -o build"
+    "build": "build-storybook -c .storybook -o public"
   },
   "dependencies": {
     "antd": "^4.1.0",
