@@ -1,11 +1,21 @@
 import React from "react";
 
-import PreviewImage from "../components/preview-image/index.es";
+import PreviewImage from "../components/preview-image/index";
 import "antd/dist/antd.css";
 
 export default {
   title: "预览图组件",
   component: PreviewImage,
+  argTypes: {
+    src: { control: "text", description: "图片地址" },
+    width: { control: "text", description: "图片地址" },
+    height: { control: "text", description: "图片地址" },
+    fullWidth: {
+      control: "text",
+      description: "按宽度缩放展示模式，默认 460 * auto",
+    },
+    mask: { control: "boolean", description: "是否显示半透明底板，默认显示" },
+  },
 };
 
 export function PreviewImageWithNoProps() {

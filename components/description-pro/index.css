@@ -1,0 +1,11 @@
+.descriptions-pro .ant-descriptions {
+  margin-bottom: 20px; }
+
+.descriptions-pro.text-align-center .ant-descriptions .ant-descriptions-item-label {
+  text-align: center; }
+
+.descriptions-pro.text-align-center .ant-descriptions .ant-descriptions-item-content {
+  text-align: center; }
+
+.descriptions-pro .ant-descriptions-item > span {
+  vertical-align: middle; }
