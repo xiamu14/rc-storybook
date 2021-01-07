@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import { EvaCloseOutline } from 'react-icons-eva/eva';
@@ -86,24 +86,21 @@ function styleInject(css, ref) {
 var css = ".modal-wrapper {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100vw;\n  height: 100vh;\n  overflow: hidden;\n  z-index: 100; }\n  .modal-wrapper .modal-overlay {\n    width: 100%;\n    height: 100%; }\n    .modal-wrapper .modal-overlay.modal-mask {\n      background: rgba(0, 0, 0, 0.45); }\n  .modal-wrapper .modal-animate-box {\n    position: absolute;\n    width: 100%;\n    transform-origin: 0 0 0; }\n  .modal-wrapper .modal {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    width: 70%;\n    height: 400px;\n    background-color: #ffffff;\n    border-radius: 6px;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }\n  .modal-wrapper .modal-header {\n    position: relative;\n    height: 40px; }\n    .modal-wrapper .modal-header .modal-close-button {\n      position: absolute;\n      top: 0px;\n      right: 0px;\n      width: 40px;\n      height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      cursor: pointer; }\n  .modal-wrapper .modal-content {\n    padding: 18px; }\n";
 styleInject(css);
 
-var useModal = function (init) {
-    var _a = useState(init || false), visible = _a[0], setVisible = _a[1];
-    function toggle() {
-        setVisible(!visible);
-    }
-    function show() {
-        setVisible(true);
-    }
-    function hide() {
-        setVisible(false);
-    }
-    /** @desc 返回 useModal 相关使用函数 */
-    return [visible, toggle, show, hide];
-};
-
-var Modal = function (props) {
-    var visible = props.visible, onCancel = props.onCancel, _a = props.className, className = _a === void 0 ? "" : _a, _b = props.mask, mask = _b === void 0 ? true : _b, _c = props.duration, duration = _c === void 0 ? 500 : _c, _d = props.header, header = _d === void 0 ? true : _d;
+var Modal = forwardRef(function (props, ref) {
+    var _a = props.className, className = _a === void 0 ? "" : _a, _b = props.mask, mask = _b === void 0 ? true : _b, _c = props.duration, duration = _c === void 0 ? 500 : _c, _d = props.header, header = _d === void 0 ? true : _d;
     var _e = useState(false), isMount = _e[0], setIsMount = _e[1];
+    var _f = useState(false), visible = _f[0], setVisible = _f[1];
+    var handleCancel = function () {
+        setVisible(false);
+    };
+    useImperativeHandle(ref, function () { return ({
+        show: function () {
+            setVisible(true);
+        },
+        hide: function () {
+            handleCancel();
+        }
+    }); });
     useEffect(function () {
         if (visible) {
             setIsMount(visible);
@@ -130,16 +127,15 @@ var Modal = function (props) {
                 React.createElement("div", { className: classnames({
                         "modal-overlay": true,
                         "modal-mask": mask
-                    }), onClick: onCancel }),
+                    }), onClick: handleCancel }),
                 React.createElement(animated.div, { style: contentStyle, className: "modal-animate-box" },
                     React.createElement("div", { className: "modal" },
                         header ? (React.createElement("div", { className: "modal-header" },
-                            React.createElement("div", { className: "modal-close-button", "data-dismiss": "modal", "aria-label": "Close", onClick: onCancel },
+                            React.createElement("div", { className: "modal-close-button", "data-dismiss": "modal", "aria-label": "Close", onClick: handleCancel },
                                 React.createElement(EvaCloseOutline, { size: "22px", color: "rgba(0,0,0,.75)" })))) : null,
                         React.createElement("div", { className: "modal-content" }, props.children ? props.children : React.createElement("p", null, "Hello, I'm a modal.")))))), document.body)
         : null;
-};
+});
 
 export default Modal;
-export { useModal };
 //# sourceMappingURL=index.es.js.map
